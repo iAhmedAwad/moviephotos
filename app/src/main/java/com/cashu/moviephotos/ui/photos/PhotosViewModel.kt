@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class PhotosViewModel : ViewModel() {
     val photosRepo = PhotosMainRepository()
-    private val _errorState = MutableLiveData<String>()
     private  val TAG = "PhotosViewModel"
+    private val _errorState = MutableLiveData<String>()
     val errorState: LiveData<String>
         get() = _errorState
 

@@ -3,9 +3,7 @@ package com.cashu.moviephotos.data.remote.constants
 class APIPaths {
 
     companion object {
-
         const val SERVICES_REST = "services/rest"
-
     }
 
 

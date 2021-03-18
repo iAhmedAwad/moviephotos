@@ -66,4 +66,6 @@ class PhotosAdapter : RecyclerView.Adapter<PhotosAdapter.MyViewHolder>() {
     fun addData(photoList: List<Photo>) {
         this.photosList.addAll(photoList)
     }
+
+
 }

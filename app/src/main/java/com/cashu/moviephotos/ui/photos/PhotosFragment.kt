@@ -20,7 +20,7 @@ class PhotosFragment : Fragment() {
     private lateinit var viewModel: PhotosViewModel
     private lateinit var recyclerView: RecyclerView
     private var photosAdapter = PhotosAdapter()
-    private  val TAG = "PhotosFragment"
+    private val TAG = "PhotosFragment"
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -30,7 +30,6 @@ class PhotosFragment : Fragment() {
         val view =
             inflater.inflate(R.layout.photos_fragment, container, false)
 
-
         initViews(view)
 
         return view
@@ -39,7 +38,7 @@ class PhotosFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(PhotosViewModel::class.java)
-        // TODO: Use the ViewModel
+
         viewModel.photos.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "onActivityCreated: ${it[0].id}")
             photosAdapter.setData(it)
