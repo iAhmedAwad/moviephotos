@@ -29,9 +29,9 @@
 
             <ImageView
                 android:id="@+id/imageView_photo_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxHeight="281dp"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_max="281dp"

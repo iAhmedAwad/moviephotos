@@ -5,7 +5,6 @@ class APIQueries {
     companion object {
 
 
-
         //region request constants
         const val METHOD = "method"
         const val FORMAT = "format"
@@ -17,6 +16,8 @@ class APIQueries {
         const val FORMAT_VALUE = "json"
         const val JSON_CALLBACK = "nojsoncallback"
         const val TEXT_VALUE = "Color"
+        const val MIN_PER_PAGE = 20
+
         //endregion
 
         //region image url
@@ -24,7 +25,7 @@ class APIQueries {
         const val DOMAIN = ".static.flickr.com/"
         const val SLASH = "/"
         const val UNDERSCORE = "_"
-        const  val EXTENSION = ".jpg"
+        const val EXTENSION = ".jpg"
         //endregion
 
 

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,9 @@ class PhotosFragment : Fragment() {
     private lateinit var viewModel: PhotosViewModel
     private lateinit var recyclerView: RecyclerView
     private var photosAdapter = PhotosAdapter()
+    private lateinit var layoutManager: LinearLayoutManager
     private val TAG = "PhotosFragment"
+    private lateinit var onScrollListener: RecyclerView.OnScrollListener
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -39,61 +40,45 @@ class PhotosFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(PhotosViewModel::class.java)
 
-        viewModel.photos.observe(viewLifecycleOwner, Observer {
+        viewModel.photos.observe(viewLifecycleOwner, {
             Log.d(TAG, "onActivityCreated: ${it[0].id}")
-            photosAdapter.setData(it)
+            if (viewModel.page == 1) {
+                photosAdapter.setData(it)
+            } else {
+                photosAdapter.removeLoader()
+                photosAdapter.addData(it)
+            }
+        })
+
+        viewModel.pageCount.observe(viewLifecycleOwner, {
+            if (viewModel.page >= it) {
+                recyclerView.removeOnScrollListener(onScrollListener)
+            }
         })
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initViews(view: View) {
         recyclerView = view.findViewById(R.id.recyclerView)
+        layoutManager = LinearLayoutManager(requireContext())
 
+        onScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (layoutManager.findLastVisibleItemPosition() == photosAdapter.itemCount - 10) {
+                    photosAdapter.addLoader()
+                    viewModel.getData()
+                }
+            }
+        }
+
+
+        recyclerView.addOnScrollListener(onScrollListener)
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = this@PhotosFragment.layoutManager
             setHasFixedSize(true)
             adapter = photosAdapter
         }
     }
-/*
-    private suspend fun getData() {
-        CoroutineScope(IO).launch {
 
-            val response = apiRepository.getDataAsync(
-                APIQueries.METHOD_PHOTOS_SEARCH, APIQueries.FORMAT_VALUE, APIQueries.TEXT_VALUE,
-                1, 20
-            )
-
-            withContext(Dispatchers.Main) {
-                try {
-                    if (response.isSuccessful) {
-                        //Do something with response e.g show to the UI.
-                        val photos = response.body()?.photos?.photo
-                        if (photos != null) {
-                            photosAdapter.setData(photos)
-                        }
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Error: ${response.code()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } catch (e: HttpException) {
-                    Toast.makeText(requireContext(), "Exception ${e.message}", Toast.LENGTH_SHORT)
-                        .show()
-                } catch (e: Throwable) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Ooops: Something else went wrong",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-        }
-    }
-
-
- */
 }

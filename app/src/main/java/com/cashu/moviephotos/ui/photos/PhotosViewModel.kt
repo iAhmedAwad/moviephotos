@@ -13,8 +13,12 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class PhotosViewModel : ViewModel() {
+
+    var page = 0
+        get() = field
+        private set
     val photosRepo = PhotosMainRepository()
-    private  val TAG = "PhotosViewModel"
+    private val TAG = "PhotosViewModel"
     private val _errorState = MutableLiveData<String>()
     val errorState: LiveData<String>
         get() = _errorState
@@ -22,6 +26,10 @@ class PhotosViewModel : ViewModel() {
     private val _photos = MutableLiveData<List<Photo>>()
     val photos: LiveData<List<Photo>>
         get() = _photos
+
+    private val _pageCount = MutableLiveData<Int>()
+    val pageCount: LiveData<Int>
+        get() = _pageCount
 
     init {
         getData()
@@ -32,16 +40,17 @@ class PhotosViewModel : ViewModel() {
         CoroutineScope(IO).launch {
             Log.d(TAG, "getData: getting data .. viewmodel")
             try {
-                val result = photosRepo.getDataAsync()
+                val result = photosRepo.getDataAsync(++page)
                 Log.d(TAG, "getData: getting data .. viewmodel")
 
                 when (result) {
                     is Deferred<*> -> {
                         Log.d(TAG, "getData: when Deferred")
 
-                        val res =result.await()
-                        if(res is PhotoWrapper){
-                        _photos.postValue(res.photos.photo)
+                        val res = result.await()
+                        if (res is PhotoWrapper) {
+                            _photos.postValue(res.photos.photo)
+                            _pageCount.postValue(res.photos.pages)
                         }
                     }
 
