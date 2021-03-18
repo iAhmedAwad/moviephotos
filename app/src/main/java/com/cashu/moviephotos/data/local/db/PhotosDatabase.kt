@@ -1,12 +1,22 @@
 package com.cashu.moviephotos.data.local.db
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.cashu.moviephotos.data.local.PhotosDao
+import com.cashu.moviephotos.data.model.Photo
 
+@Database(
+    entities = [
+    Photo::class
+    ],
+    version = 1,
+    exportSchema = false
+)
 abstract class PhotosDatabase: RoomDatabase() {
 
-    abstract fun photosDao()
+    abstract fun photosDao() : PhotosDao
 
     companion object {
         @Volatile

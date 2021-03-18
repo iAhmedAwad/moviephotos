@@ -1,36 +1,28 @@
 package com.cashu.moviephotos.ui.photos
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.HttpException
 import com.cashu.moviephotos.R
-import com.cashu.moviephotos.data.remote.APIRepository
-import com.cashu.moviephotos.data.remote.APIServices
-import com.cashu.moviephotos.data.remote.RetrofitClient
-import com.cashu.moviephotos.data.remote.constants.APIQueries
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PhotosFragment : Fragment() {
 
 
     private lateinit var viewModel: PhotosViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var apiServices: APIServices
-    private lateinit var apiRepository: APIRepository
-    private val retrofitClient = RetrofitClient.getRetrofitClient()!!
     private var photosAdapter = PhotosAdapter()
+    private  val TAG = "PhotosFragment"
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,8 +30,6 @@ class PhotosFragment : Fragment() {
         val view =
             inflater.inflate(R.layout.photos_fragment, container, false)
 
-        apiServices = retrofitClient.create(APIServices::class.java)
-        apiRepository = APIRepository(apiServices)
 
         initViews(view)
 
@@ -50,27 +40,31 @@ class PhotosFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(PhotosViewModel::class.java)
         // TODO: Use the ViewModel
-       CoroutineScope(IO).launch {
-           getData()
-       }
+        viewModel.photos.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "onActivityCreated: ${it[0].id}")
+            photosAdapter.setData(it)
+        })
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initViews(view: View) {
         recyclerView = view.findViewById(R.id.recyclerView)
+
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = photosAdapter
         }
     }
-
+/*
     private suspend fun getData() {
         CoroutineScope(IO).launch {
 
-            val response = apiRepository.getPhotos(
+            val response = apiRepository.getDataAsync(
                 APIQueries.METHOD_PHOTOS_SEARCH, APIQueries.FORMAT_VALUE, APIQueries.TEXT_VALUE,
                 1, 20
             )
+
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
@@ -101,4 +95,6 @@ class PhotosFragment : Fragment() {
         }
     }
 
+
+ */
 }

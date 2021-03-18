@@ -3,6 +3,7 @@ package com.cashu.moviephotos.data.remote
 import com.cashu.moviephotos.data.model.PhotoWrapper
 import com.cashu.moviephotos.data.remote.constants.APIPaths
 import com.cashu.moviephotos.data.remote.constants.APIQueries
+import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,7 +11,7 @@ import retrofit2.http.Query
 interface APIServices {
 
     @GET(APIPaths.SERVICES_REST)
-    suspend fun getPhotos(
+    suspend fun getDataAsync(
         @Query(APIQueries.METHOD) method: String,
         @Query(APIQueries.FORMAT) format: String,
         @Query(APIQueries.TEXT) text: String,
@@ -18,7 +19,7 @@ interface APIServices {
         @Query(APIQueries.PER_PAGE) perPage: Int,
         @Query(APIQueries.JSON_CALLBACK) jsonCallback: Int,
         @Query(APIQueries.API_KEY) apiKey: String
-    ): Response<PhotoWrapper>
+    ): Deferred<PhotoWrapper>
 
     /*
     https://www.flickr.com/services/rest/?method=flickr.photos.search

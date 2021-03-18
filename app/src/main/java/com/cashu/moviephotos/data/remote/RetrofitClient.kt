@@ -2,6 +2,7 @@ package com.cashu.moviephotos.data.remote
 
 
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -43,6 +44,7 @@ class RetrofitClient {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .addCallAdapterFactory(NetworkResponseAdapterFactory())
+                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .client(okHttpClient)
                     .build()
 
