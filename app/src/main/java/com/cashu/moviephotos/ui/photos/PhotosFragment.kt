@@ -12,12 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashu.moviephotos.R
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView
 
 class PhotosFragment : Fragment() {
 
 
     private lateinit var viewModel: PhotosViewModel
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: ShimmerRecyclerView
     private var photosAdapter = PhotosAdapter()
     private lateinit var layoutManager: LinearLayoutManager
     private val TAG = "PhotosFragment"
@@ -41,13 +42,14 @@ class PhotosFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PhotosViewModel::class.java)
 
         viewModel.photos.observe(viewLifecycleOwner, {
-            Log.d(TAG, "onActivityCreated: ${it[0].id}")
+
             if (viewModel.page == 1) {
                 photosAdapter.setData(it)
             } else {
                 photosAdapter.removeLoader()
                 photosAdapter.addData(it)
             }
+            recyclerView.hideShimmerAdapter()
         })
 
         viewModel.pageCount.observe(viewLifecycleOwner, {
@@ -60,13 +62,14 @@ class PhotosFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initViews(view: View) {
         recyclerView = view.findViewById(R.id.recyclerView)
+
         layoutManager = LinearLayoutManager(requireContext())
 
         onScrollListener = object : RecyclerView.OnScrollListener() {
             @RequiresApi(Build.VERSION_CODES.N)
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (layoutManager.findLastVisibleItemPosition() == photosAdapter.itemCount - 5) {
+                if (layoutManager.findLastVisibleItemPosition() == photosAdapter.itemCount - 8) {
                     photosAdapter.addLoader()
                     viewModel.getData()
                 }
@@ -80,6 +83,8 @@ class PhotosFragment : Fragment() {
             setHasFixedSize(true)
             adapter = photosAdapter
         }
+        recyclerView.showShimmerAdapter()
+
     }
 
 }

@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/demo_light_transparent"
     android:paddingTop="@dimen/default_4"
-    app:cardBackgroundColor="@color/white">
+   >
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:cardBackgroundColor="@color/white"
+        android:background="@color/demo_light_transparent"
         app:cardCornerRadius="@dimen/default_8"
         app:cardElevation="@dimen/default_8"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/demo_light_transparent"
 
             >
 
@@ -32,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
                 android:scaleType="centerCrop"
+                android:background="@color/demo_light_transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_max="281dp"
