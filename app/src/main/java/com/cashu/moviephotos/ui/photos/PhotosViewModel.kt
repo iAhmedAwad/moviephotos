@@ -51,6 +51,9 @@ class PhotosViewModel : ViewModel() {
                         if (res is PhotoWrapper) {
                             _photos.postValue(res.photos.photo)
                             _pageCount.postValue(res.photos.pages)
+                            if (res.photos.page == 1) {
+                                photosRepo.addToLocalDatabase(res.photos.photo)
+                            }
                         }
                     }
 
@@ -59,11 +62,11 @@ class PhotosViewModel : ViewModel() {
                             Log.d(TAG, "getData: when result.isNotEmpty")
 
                             if (result[0] is Photo) {
+
                                 _photos.postValue(result as List<Photo>)
                             }
                         }
                     }
-
                 }
             } catch (e: Exception) {
                 Log.d(TAG, "getData: Exception: ${e.message}")

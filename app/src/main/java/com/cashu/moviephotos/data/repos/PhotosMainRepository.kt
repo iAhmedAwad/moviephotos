@@ -2,6 +2,7 @@ package com.cashu.moviephotos.data.repos
 
 import android.util.Log
 import com.cashu.moviephotos.application.BaseApplication
+import com.cashu.moviephotos.data.model.Photo
 import com.cashu.moviephotos.data.remote.constants.APIQueries
 import com.cashu.moviephotos.data.repos.local.PhotosLocalRepository
 import com.cashu.moviephotos.data.repos.remote.PhotosRemoteRepository
@@ -28,5 +29,8 @@ class PhotosMainRepository {
         }
     }
 
-
+    suspend fun addToLocalDatabase(photoList: List<Photo>) {
+        photosLocalRepository.deleteAllPhotos()
+        photosLocalRepository.addPhotos(photoList)
+    }
 }

@@ -8,7 +8,7 @@ import com.cashu.moviephotos.data.model.Photo
 import kotlinx.coroutines.Deferred
 
 @Dao
-public interface PhotosDao {
+ interface PhotosDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPhoto(photo: Photo)
@@ -18,4 +18,7 @@ public interface PhotosDao {
 
     @Query("SELECT * FROM photos_tbl")
     suspend fun getDataAsync(): List<Photo>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addPhotos(list: List<Photo>)
 }

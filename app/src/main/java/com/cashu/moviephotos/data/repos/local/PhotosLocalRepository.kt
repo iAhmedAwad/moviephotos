@@ -1,11 +1,9 @@
 package com.cashu.moviephotos.data.repos.local
 
-import androidx.lifecycle.LiveData
 import com.cashu.moviephotos.application.BaseApplication
 import com.cashu.moviephotos.data.local.PhotosDao
 import com.cashu.moviephotos.data.local.db.PhotosDatabase
 import com.cashu.moviephotos.data.model.Photo
-import kotlinx.coroutines.Deferred
 
 
 class PhotosLocalRepository() {
@@ -16,6 +14,10 @@ class PhotosLocalRepository() {
 
     suspend fun addPhoto(photo: Photo) {
         photosDao.addPhoto(photo)
+    }
+
+    suspend fun addPhotos(list: List<Photo>) {
+        photosDao.addPhotos(list)
     }
 
     suspend fun deleteAllPhotos() {
