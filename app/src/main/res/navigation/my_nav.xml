@@ -22,5 +22,10 @@
         android:id="@+id/singlePhotoFragment"
         android:name="com.cashu.moviephotos.ui.singlephoto.SinglePhotoFragment"
         android:label="single_photo_fragment"
-        tools:layout="@layout/single_photo_fragment" />
+        tools:layout="@layout/single_photo_fragment" >
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

@@ -10,10 +10,6 @@ import com.cashu.moviephotos.R
 
 class SinglePhotoFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SinglePhotoFragment()
-    }
-
     private lateinit var viewModel: SinglePhotoViewModel
 
     override fun onCreateView(

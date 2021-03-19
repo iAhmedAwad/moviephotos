@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.cashu.moviephotos.R
 import com.cashu.moviephotos.data.model.Photo
 import com.cashu.moviephotos.data.remote.constants.APIQueries
+import com.cashu.moviephotos.utils.ImageUtils
 
 
 class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,10 +30,7 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     photo.id + APIQueries.UNDERSCORE +
                     photo.secret + APIQueries.EXTENSION
 
-            Glide
-                .with(itemView.context)
-                .load(imageUrl)
-                .into(imageViewItemPhoto)
+           ImageUtils.setImageView(itemView.context, imageUrl, imageViewItemPhoto)
         }
 
     }
