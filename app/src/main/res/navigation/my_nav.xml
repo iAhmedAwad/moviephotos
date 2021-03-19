@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  ~ Created by Ahmed Awad
+  ~ ahmed.mmawad@hotmail.com
+  -->
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,10 +19,10 @@
         <action
             android:id="@+id/action_photosFragment_to_singlePhotoFragment"
             app:destination="@id/singlePhotoFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_fade_exit"
-            app:popExitAnim="@anim/fragment_fade_enter" />
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/singlePhotoFragment"

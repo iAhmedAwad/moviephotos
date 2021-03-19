@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021. 
+ * Created by Ahmed Awad
+ * ahmed.mmawad@hotmail.com
+ */
+
 package com.cashu.moviephotos
 
 import androidx.test.platform.app.InstrumentationRegistry

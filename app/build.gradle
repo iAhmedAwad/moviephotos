@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Created by Ahmed Awad
+ * ahmed.mmawad@hotmail.com
+ */
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -100,5 +106,8 @@ dependencies {
 
     //ShimmerRecyclerView
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+
+    //Recyclerview animators
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 
 }

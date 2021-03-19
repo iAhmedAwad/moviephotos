@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  ~ Created by Ahmed Awad
+  ~ ahmed.mmawad@hotmail.com
+  -->
+
 <resources>
     <dimen name="default_4">4dp</dimen>
     <dimen name="default_2">2dp</dimen>

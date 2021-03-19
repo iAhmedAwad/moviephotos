@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2021.
+  ~ Created by Ahmed Awad
+  ~ ahmed.mmawad@hotmail.com
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Moviephotos" parent="Theme.MaterialComponents.DayNight.DarkActionBar">

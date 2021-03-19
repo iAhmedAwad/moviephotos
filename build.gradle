@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Created by Ahmed Awad
+ * ahmed.mmawad@hotmail.com
+ */
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.4.31"

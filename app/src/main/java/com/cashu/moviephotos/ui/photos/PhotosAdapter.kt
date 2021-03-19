@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021.
+ * Created by Ahmed Awad
+ * ahmed.mmawad@hotmail.com
+ */
+
 package com.cashu.moviephotos.ui.photos
 
 import android.os.Build
@@ -7,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.cashu.moviephotos.R
@@ -31,6 +38,12 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     photo.secret + APIQueries.EXTENSION
 
            ImageUtils.setImageView(itemView.context, imageUrl, imageViewItemPhoto)
+
+            itemView.setOnClickListener {
+                val action = PhotosFragmentDirections
+                    .actionPhotosFragmentToSinglePhotoFragment(imageUrl)
+                itemView.findNavController().navigate(action)
+            }
         }
 
     }
@@ -74,12 +87,14 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun setData(photoList: List<Photo>) {
         photosList.clear()
         this.photosList = ArrayList(photoList)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0,photoList.size-1)
+        //notifyDataSetChanged()
     }
 
     fun addData(photoList: List<Any>) {
         this.photosList.addAll(photoList)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(this.photosList.size-photoList.size, photoList.size-1)
+        //notifyDataSetChanged()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
