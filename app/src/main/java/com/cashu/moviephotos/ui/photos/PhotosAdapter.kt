@@ -1,9 +1,12 @@
 package com.cashu.moviephotos.ui.photos
 
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.cashu.moviephotos.R
@@ -81,7 +84,13 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun addLoader() {
+        Log.d(Companion.TAG, "addLoader: list size before is ${this.photosList.size}")
+        if (this.photosList.contains(0))
+        // this.photosList.remove(0)
+            this.photosList.removeIf { it !is Photo }
+        Log.d(Companion.TAG, "addLoader: list size after is ${this.photosList.size}")
         this.photosList.add(0)
         notifyDataSetChanged()
     }
@@ -89,6 +98,10 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun removeLoader() {
         this.photosList.remove(0)
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val TAG = "PhotosAdapter"
     }
 
 }

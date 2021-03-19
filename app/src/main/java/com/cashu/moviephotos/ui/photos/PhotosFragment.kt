@@ -63,9 +63,10 @@ class PhotosFragment : Fragment() {
         layoutManager = LinearLayoutManager(requireContext())
 
         onScrollListener = object : RecyclerView.OnScrollListener() {
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (layoutManager.findLastVisibleItemPosition() == photosAdapter.itemCount - 10) {
+                if (layoutManager.findLastVisibleItemPosition() == photosAdapter.itemCount - 5) {
                     photosAdapter.addLoader()
                     viewModel.getData()
                 }
