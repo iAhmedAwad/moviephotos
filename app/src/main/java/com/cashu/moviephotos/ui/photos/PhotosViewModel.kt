@@ -20,18 +20,23 @@ import kotlinx.coroutines.launch
 
 class PhotosViewModel : ViewModel() {
 
+    private var photosList = ArrayList<Any>()
     var page = 0
         get() = field
         private set
     val photosRepo = PhotosMainRepository()
-    private val TAG = "PhotosViewModel"
+    private val TAG = "PhotosViewModelTag"
     private val _errorState = MutableLiveData<String>()
     val errorState: LiveData<String>
         get() = _errorState
 
-    private val _photos = MutableLiveData<List<Photo>>()
-    val photos: LiveData<List<Photo>>
+    private val _photos = MutableLiveData<List<Any>>()
+    val photos: LiveData<List<Any>>
         get() = _photos
+
+    private val _localPhotos = MutableLiveData<List<Any>>()
+    val localPhotos: LiveData<List<Any>>
+        get() = _localPhotos
 
     private val _pageCount = MutableLiveData<Int>()
     val pageCount: LiveData<Int>
@@ -55,7 +60,9 @@ class PhotosViewModel : ViewModel() {
 
                         val res = result.await()
                         if (res is PhotoWrapper) {
-                            _photos.postValue(res.photos.photo)
+                            //_photos.postValue(res.photos.photo)
+                            photosList.addAll(res.photos.photo)
+                            _photos.postValue(photosList)
                             _pageCount.postValue(res.photos.pages)
                             if (res.photos.page == 1) {
                                 photosRepo.addToLocalDatabase(res.photos.photo)
@@ -68,8 +75,7 @@ class PhotosViewModel : ViewModel() {
                             Log.d(TAG, "getData: when result.isNotEmpty")
 
                             if (result[0] is Photo) {
-
-                                _photos.postValue(result as List<Photo>)
+                                _localPhotos.postValue(result as List<Photo>)
                             }
                         }
                     }

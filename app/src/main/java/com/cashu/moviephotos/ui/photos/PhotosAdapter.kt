@@ -84,7 +84,7 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return photosList.size
     }
 
-    fun setData(photoList: List<Photo>) {
+    fun setData(photoList: List<Any>) {
         photosList.clear()
         this.photosList = ArrayList(photoList)
         notifyItemRangeInserted(0,photoList.size-1)
@@ -99,11 +99,11 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun addLoader() {
-        Log.d(Companion.TAG, "addLoader: list size before is ${this.photosList.size}")
+        Log.d(TAG, "addLoader: list size before is ${this.photosList.size}")
         if (this.photosList.contains(0))
         // this.photosList.remove(0)
             this.photosList.removeIf { it !is Photo }
-        Log.d(Companion.TAG, "addLoader: list size after is ${this.photosList.size}")
+        Log.d(TAG, "addLoader: list size after is ${this.photosList.size}")
         this.photosList.add(0)
         notifyDataSetChanged()
     }
@@ -114,7 +114,7 @@ class PhotosAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     companion object {
-        private const val TAG = "PhotosAdapter"
+        private const val TAG = "PhotosAdapterTag"
     }
 
 }

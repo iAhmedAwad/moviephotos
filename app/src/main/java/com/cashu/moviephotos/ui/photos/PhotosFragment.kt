@@ -12,27 +12,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.OvershootInterpolator
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashu.moviephotos.R
 import com.cashu.moviephotos.application.BaseApplication
 import com.cashu.moviephotos.utils.ConnectivityUtils
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 class PhotosFragment : Fragment() {
 
     private lateinit var viewModel: PhotosViewModel
-    private lateinit var recyclerView: ShimmerRecyclerView
+    private lateinit var recyclerView: RecyclerView
     private var photosAdapter = PhotosAdapter()
     private lateinit var layoutManager: LinearLayoutManager
-    private val TAG = "PhotosFragment"
+    private val TAG = "PhotosFragmentTag"
     private lateinit var onScrollListener: RecyclerView.OnScrollListener
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -54,15 +52,16 @@ class PhotosFragment : Fragment() {
 
         viewModel.photos.observe(viewLifecycleOwner, {
 
-            if (viewModel.page == 1) {
-                photosAdapter.setData(it)
-            } else {
+            photosAdapter.setData(it)
+            if (viewModel.page != 1) {
                 photosAdapter.removeLoader()
-                photosAdapter.addData(it)
             }
+            recyclerView.addOnScrollListener(onScrollListener)
 
-                recyclerView.hideShimmerAdapter()
+        })
 
+        viewModel.localPhotos.observe(viewLifecycleOwner, Observer {
+            photosAdapter.setData(it)
         })
 
         viewModel.pageCount.observe(viewLifecycleOwner, {
@@ -87,16 +86,14 @@ class PhotosFragment : Fragment() {
                 ) {
                     photosAdapter.addLoader()
                     viewModel.getData()
-                }//When there's no connection, is it enough to do nothing?
+                }
             }
         }
 
 
-        recyclerView.addOnScrollListener(onScrollListener)
         recyclerView.itemAnimator = SlideInLeftAnimator()
-        //recyclerView.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         recyclerView.itemAnimator?.apply {
-            addDuration = 1000
+            addDuration = 500
             removeDuration = 100
             moveDuration = 1000
             changeDuration = 100
@@ -106,7 +103,6 @@ class PhotosFragment : Fragment() {
             setHasFixedSize(true)
             adapter = photosAdapter
         }
-        recyclerView.showShimmerAdapter()
 
     }
 
