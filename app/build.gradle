@@ -28,6 +28,8 @@ android {
     }
     buildFeatures {
         dataBinding true
+        viewBinding true
+
     }
 
     buildTypes {
@@ -109,5 +111,9 @@ dependencies {
 
     //Recyclerview animators
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+
+    //Dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0'
 
 }

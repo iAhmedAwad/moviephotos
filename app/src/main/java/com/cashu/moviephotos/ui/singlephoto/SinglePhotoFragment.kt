@@ -7,48 +7,51 @@
 package com.cashu.moviephotos.ui.singlephoto
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.cashu.moviephotos.R
-import com.cashu.moviephotos.utils.ImageUtils
+import com.cashu.moviephotos.databinding.SinglePhotoFragmentBinding
 
 class SinglePhotoFragment : Fragment() {
 
     private lateinit var viewModel: SinglePhotoViewModel
     private val args: SinglePhotoFragmentArgs by navArgs()
-    private lateinit var imageViewSinglePhoto: ImageView
+    private lateinit var binding: SinglePhotoFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.single_photo_fragment, container, false)
 
-        imageViewSinglePhoto = view.findViewById(R.id.iv_single_photo)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.single_photo_fragment,
+            container,
+            false
+        )
         prepareView()
         loadImage()
-        return view
+        return binding.root
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SinglePhotoViewModel::class.java)
-        // TODO: Use the ViewModel
+
     }
 
     private fun loadImage() {
-        val imageUrl = args.imageUrl
-        Log.d(TAG, "onCreateView: imageUrl is: $imageUrl")
-        if (imageUrl != null) {
-            ImageUtils.setImageView(requireContext(), imageUrl, imageViewSinglePhoto)
+        val comingImageUrl = args.imageUrl
+        if (comingImageUrl != null) {
+            binding.imageUrl = comingImageUrl
         }
     }
 

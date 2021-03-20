@@ -59,21 +59,25 @@ class PhotosViewModel : ViewModel() {
                 when (result) {
                     is NetworkResponse<*, *> -> {
                         Log.d(TAG, "getData: when Deferred")
-                        val res = result as NetworkResponse<PhotoWrapper, String>
-                        when (res) {
+                        val resultResponse = result as NetworkResponse<PhotoWrapper, String>
+                        when (resultResponse) {
 
                             is NetworkResponse.Success -> {
-                                //_photos.postValue(res.photos.photo)
-                                photosList.addAll(res.body.photos.photo)
+                                val list: ArrayList<Any> =
+                                    ArrayList(resultResponse.body.photos.photo)
+                                list.addAdv()
+                                //photosList.addAll(resultResponse.body.photos.photo)
+                                photosList.addAll(list)
+                                Log.d(TAG, "getData: $list")
                                 _photos.postValue(photosList)
-                                _pageCount.postValue(res.body.photos.pages)
-                                if (res.body.photos.page == 1) {
-                                    photosRepo.addToLocalDatabase(res.body.photos.photo)
+                                _pageCount.postValue(resultResponse.body.photos.pages)
+                                if (resultResponse.body.photos.page == 1) {
+                                    photosRepo.addToLocalDatabase(resultResponse.body.photos.photo)
                                 }
 
                             }
                             is NetworkResponse.ServerError -> {
-                                _errorState.postValue(res.body)
+                                _errorState.postValue(resultResponse.body)
 
                             }
                             is NetworkResponse.NetworkError -> {
@@ -105,4 +109,18 @@ class PhotosViewModel : ViewModel() {
             }
         }
     }
+
+    private fun ArrayList<Any>.addAdv(): List<Any> {
+        var count = 0
+        for (i in 0..this.size) {
+            count++
+            if (count == 6) {
+                this.add(i, "adv")
+                count = 0
+            }
+        }
+        return this
+    }
+
+
 }

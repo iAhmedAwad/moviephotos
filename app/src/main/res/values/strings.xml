@@ -8,4 +8,6 @@
     <string name="app_name">Movies\' Photos</string>
     <string name="network_error">No internet connection found!</string>
     <string name="general_error">An error occured</string>
+    <string name="error">Error</string>
+    <string name="ok">Ok</string>
 </resources>
