@@ -10,11 +10,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashu.moviephotos.R
+import com.cashu.moviephotos.application.BaseApplication
 import com.cashu.moviephotos.data.model.Photo
 import com.cashu.moviephotos.data.model.PhotoWrapper
 import com.cashu.moviephotos.data.repos.PhotosMainRepository
+import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
@@ -55,19 +57,36 @@ class PhotosViewModel : ViewModel() {
                 Log.d(TAG, "getData: getting data .. viewmodel")
 
                 when (result) {
-                    is Deferred<*> -> {
+                    is NetworkResponse<*, *> -> {
                         Log.d(TAG, "getData: when Deferred")
+                        val res = result as NetworkResponse<PhotoWrapper, String>
+                        when (res) {
 
-                        val res = result.await()
-                        if (res is PhotoWrapper) {
-                            //_photos.postValue(res.photos.photo)
-                            photosList.addAll(res.photos.photo)
-                            _photos.postValue(photosList)
-                            _pageCount.postValue(res.photos.pages)
-                            if (res.photos.page == 1) {
-                                photosRepo.addToLocalDatabase(res.photos.photo)
+                            is NetworkResponse.Success -> {
+                                //_photos.postValue(res.photos.photo)
+                                photosList.addAll(res.body.photos.photo)
+                                _photos.postValue(photosList)
+                                _pageCount.postValue(res.body.photos.pages)
+                                if (res.body.photos.page == 1) {
+                                    photosRepo.addToLocalDatabase(res.body.photos.photo)
+                                }
+
+                            }
+                            is NetworkResponse.ServerError -> {
+                                _errorState.postValue(res.body)
+
+                            }
+                            is NetworkResponse.NetworkError -> {
+                                _errorState.postValue(BaseApplication.appContext.getString(R.string.network_error))
+
+                            }
+                            is NetworkResponse.UnknownError -> {
+                                _errorState.postValue(BaseApplication.appContext.getString(R.string.general_error))
+
                             }
                         }
+
+
                     }
 
                     is List<*> -> {

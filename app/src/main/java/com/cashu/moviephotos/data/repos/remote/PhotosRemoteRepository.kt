@@ -10,6 +10,7 @@ import com.cashu.moviephotos.data.model.PhotoWrapper
 import com.cashu.moviephotos.data.remote.APIServices
 import com.cashu.moviephotos.data.remote.RetrofitClient
 import com.cashu.moviephotos.data.remote.constants.APIQueries
+import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.Deferred
 
 class PhotosRemoteRepository() {
@@ -21,7 +22,7 @@ class PhotosRemoteRepository() {
         method: String, format: String,
         text: String, page: Int,
         perPage: Int, jsonCallback: Int = 50, apiKey: String = APIQueries.API_KEY_VALUE
-    ): Deferred<PhotoWrapper>? {
+    ): NetworkResponse<PhotoWrapper, String>? {
 
         return apiServices?.getDataAsync(method, format, text, page, perPage, jsonCallback, apiKey)
     }

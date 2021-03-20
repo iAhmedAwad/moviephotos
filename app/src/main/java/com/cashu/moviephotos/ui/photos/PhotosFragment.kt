@@ -12,15 +12,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashu.moviephotos.R
 import com.cashu.moviephotos.application.BaseApplication
+import com.cashu.moviephotos.data.remote.constants.APIQueries
 import com.cashu.moviephotos.utils.ConnectivityUtils
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
 
@@ -69,6 +73,10 @@ class PhotosFragment : Fragment() {
                 recyclerView.removeOnScrollListener(onScrollListener)
             }
         })
+
+        viewModel.errorState.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -102,6 +110,16 @@ class PhotosFragment : Fragment() {
             layoutManager = this@PhotosFragment.layoutManager
             setHasFixedSize(true)
             adapter = photosAdapter
+        }
+        photosAdapter.itemClickedCallBack = {photo->
+            val imageUrl = APIQueries.FARM + photo.farm +
+                    APIQueries.DOMAIN + photo.server + APIQueries.SLASH +
+                    photo.id + APIQueries.UNDERSCORE +
+                    photo.secret + APIQueries.EXTENSION
+            val action = PhotosFragmentDirections
+                .actionPhotosFragmentToSinglePhotoFragment(imageUrl)
+            findNavController().navigate(action)
+
         }
 
     }

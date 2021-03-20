@@ -22,18 +22,22 @@ class PhotosMainRepository {
     private var photosLocalRepository: PhotosLocalRepository = PhotosLocalRepository()
 
     suspend fun getDataAsync(page: Int): Any? {
-        return if (ConnectivityUtils(BaseApplication.appContext).isNetworkConnected) {
-            Log.d(TAG, "getDataAsync: ConnectivityUtils(BaseApplication.appContext)")
-            photosRemoteRepository.getDataAsync(
+
+            //Log.d(TAG, "getDataAsync: ConnectivityUtils(BaseApplication.appContext)")
+           return photosRemoteRepository.getDataAsync(
                 APIQueries.METHOD_PHOTOS_SEARCH, APIQueries.FORMAT_VALUE, APIQueries.TEXT_VALUE,
                 page, APIQueries.MIN_PER_PAGE
             )
 
-        } else {
+        }
+        /*
+        else {
             Log.d(TAG, "getDataAsync: else photosLocalRepository.getDataAsync")
             photosLocalRepository.getDataAsync()
         }
-    }
+
+         */
+
 
     suspend fun addToLocalDatabase(photoList: List<Photo>) {
         photosLocalRepository.deleteAllPhotos()

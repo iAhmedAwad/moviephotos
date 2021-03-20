@@ -24,7 +24,7 @@ class RetrofitClient {
     companion object {
         private var retrofitInstance: Retrofit? = null
 
-         const val BASE_URL = "https://www.flickr.com/"
+        const val BASE_URL = "https://www.flickr.com/"
 
         fun getRetrofitClient(): Retrofit? {
             if (retrofitInstance == null) {
@@ -39,14 +39,14 @@ class RetrofitClient {
                     .addInterceptor(interceptor)
                     .build()
 
-              val moshi=  Moshi.Builder()
+                val moshi = Moshi.Builder()
                     .add(KotlinJsonAdapterFactory())
                     .build()
 
                 retrofitInstance = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(MoshiConverterFactory.create(moshi))
-                  //  .addCallAdapterFactory(NetworkResponseAdapterFactory())
+                    .addCallAdapterFactory(NetworkResponseAdapterFactory())
                     .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .client(okHttpClient)
                     .build()
@@ -55,5 +55,5 @@ class RetrofitClient {
             return retrofitInstance
         }
     }
-    
+
 }
