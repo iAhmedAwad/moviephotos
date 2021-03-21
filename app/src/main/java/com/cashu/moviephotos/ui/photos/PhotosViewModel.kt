@@ -111,12 +111,11 @@ class PhotosViewModel : ViewModel() {
     }
 
     private fun ArrayList<Any>.addAdv(): List<Any> {
-        var count = 0
-        for (i in 0..this.size) {
-            count++
-            if (count == 6) {
-                this.add(i, "adv")
-                count = 0
+        var increment = 0
+        for (i in 0..size) {
+            if ((i + 1) % 5 == 0) {
+                this.add(i + 1 + increment, "adv")
+                increment++
             }
         }
         return this
